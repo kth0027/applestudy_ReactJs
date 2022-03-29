@@ -34,6 +34,29 @@ function App() {
   // UI 만들기
   let [modal, modal변경] = useState(false);
 
+
+  // map
+  // var 어레이 = [2, 3, 4];
+
+  // // var 뉴어레이 = 어레이.map(function(a){
+  // 어레이.map(function (a) {
+  //   return a * 2
+  // })
+
+  // for 반복문
+  function 반복된UI() {
+    var 어레이 = [];
+    for (var i = 0; i < 3; i++) {
+      어레이.push(<div>안녕</div>);
+    }
+
+    return 어레이
+  }
+
+
+
+
+
   return (
     <div className="App">
       <div className="black-nav">
@@ -68,11 +91,31 @@ function App() {
 
 
       <div className="list">
-        <h3 onClick={ ()=>{modal변경(true)} }>{글제목[2]}</h3>
+        <h3 onClick={() => { modal변경(true) }}>{글제목[2]}</h3>
         <p>2월 19일 발행</p>
         <hr />
       </div>
+
+      {/* 반복문 위한 map 사용 */}
+
+      {
+        글제목.map(function (글) {
+          return (
+            <div className="list">
+              <h3>{글} <span onClick={() => { 따봉변경(따봉 + 1) }} style={{ cursor: 'pointer' }}> 👍 </span> {따봉} </h3>
+              <p>2월 18일 발행</p>
+              <hr />
+            </div>
+          )
+        })
+      }
+
+      {/* for 반복문 */}
       
+      {/* {
+        반복된UI()
+      } */}
+
       {/* 모달창 */}
 
       {/* 
@@ -82,26 +125,26 @@ function App() {
         <p>상세내용</p>
       </div> */}
 
-      
+
       {/* 모달 컴포넌트 */}
       {/* <Modal></Modal> */}
       {/* if 조건으로 ui 동작부여 */}
-      
-      { 
-      modal === true ? <Modal></Modal> : null
+
+      {
+        modal === true ? <Modal 글제목={글제목}></Modal> : null
       }
 
       {/* 열고 닫기 */}
-      <button onClick={()=>{modal변경(!modal)} }>모달창 열고 닫는 버튼</button>
+      <button onClick={() => { modal변경(!modal) }}>모달창 열고 닫는 버튼</button>
 
     </div>
   );
 }
 
-function Modal() {
+function Modal(props) {
   return (
     <div className='modal'>
-      <h2>제목</h2>
+      <h2>제목 {props.글제목[1]}</h2>
       <p>날짜</p>
       <p>상세내용</p>
     </div>
