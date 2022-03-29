@@ -53,6 +53,12 @@ function App() {
     return 어레이
   }
 
+  // 
+  let [누른제목, 누른제목변경] = useState(0);
+
+  // 인풋 변수받기
+  let [입력값, 입력값변경] = useState(''); // 저장공간
+
 
 
 
@@ -76,7 +82,7 @@ function App() {
 
       {/* <button  onClick={제목바꾸기} style={ {cursor : 'pointer', marginTop : '10px'} }>추천</button> */}
 
-      <div className="list">
+      {/* <div className="list">
         <h3>{글제목[0]} <span onClick={() => { 따봉변경(따봉 + 1) }} style={{ cursor: 'pointer' }}> 👍 </span> {따봉} </h3>
         <p>2월 17일 발행</p>
         <hr />
@@ -94,15 +100,17 @@ function App() {
         <h3 onClick={() => { modal변경(true) }}>{글제목[2]}</h3>
         <p>2월 19일 발행</p>
         <hr />
-      </div>
+      </div> */}
 
       {/* 반복문 위한 map 사용 */}
 
       {
-        글제목.map(function (글) {
+        글제목.map(function (글, i) {
           return (
-            <div className="list">
-              <h3>{글} <span onClick={() => { 따봉변경(따봉 + 1) }} style={{ cursor: 'pointer' }}> 👍 </span> {따봉} </h3>
+            <div className="list" key={i}>
+              <h3 onClick={() => { 누른제목변경(i) }}>{글}
+                <span onClick={() => { 따봉변경(따봉 + 1) }} style={{ cursor: 'pointer' }}> 👍 </span>
+                {따봉} </h3>
               <p>2월 18일 발행</p>
               <hr />
             </div>
@@ -111,7 +119,7 @@ function App() {
       }
 
       {/* for 반복문 */}
-      
+
       {/* {
         반복된UI()
       } */}
@@ -130,12 +138,37 @@ function App() {
       {/* <Modal></Modal> */}
       {/* if 조건으로 ui 동작부여 */}
 
-      {
-        modal === true ? <Modal 글제목={글제목}></Modal> : null
-      }
+
+      {/*  */}
+      {/* <button onClick={() => { 누른제목변경(0) }}>버튼1</button>
+      <button onClick={() => { 누른제목변경(1) }}>버튼2</button>
+      <button onClick={() => { 누른제목변경(2) }}>버튼3</button> */}
+
+      {/* 인풋 받기 */}
+      {/* 무언가 입력 될 때 안의 함수 실행 */}
+            {/* <input type="text" onChange={ (e)=>{ 입력값변경(e.target.value) } } /> */}
+
+            <div className="publish">
+              <input onChange={ (e)=>{입력값변경(e.target.value)} } type="text" />
+              <button onClick={ ()=>{
+                // 글제목변경( [입력값,'남자 코트 추천', '강남 우동 맛집', '파이썬 독학'] )
+
+                var arrayCopy = [...글제목];
+                arrayCopy.unshift(입력값);
+                
+                글제목변경( arrayCopy );
+              } }>저장</button>
+            </div>
 
       {/* 열고 닫기 */}
       <button onClick={() => { modal변경(!modal) }}>모달창 열고 닫는 버튼</button>
+            
+            <Profile/>
+
+      
+      {
+        modal === true ? <Modal 글제목={글제목} 누른제목={누른제목}></Modal> : null
+      }
 
     </div>
   );
@@ -144,13 +177,46 @@ function App() {
 function Modal(props) {
   return (
     <div className='modal'>
-      <h2>제목 {props.글제목[1]}</h2>
+      {/* <h2>제목 {props.글제목[1]}</h2> */}
+      <h2>{props.글제목[props.누른제목]}</h2>
       <p>날짜</p>
       <p>상세내용</p>
+      
     </div>
   )
 }
 
+// React Class 문법 (구버전) : 컴포넌트 만드는방법
+class Profile extends React.Component {
+  constructor(){
+    super();
+    // state
+    this.state = {name : 'Kim'}
+  }
+
+  changeName(){
+    this.setState({name : 'Hong'})
+  }
+
+  // changeName = () => {
+  //   this.setState({name : 'Hong'})
+  // }
+
+  render(){
+    return(
+      <div>
+        <h3>프로필입니다</h3>
+        <p>저는 {this.state.name} 입니다</p>
+        {/* <button onClick={ ()=>{ this.setState( {name : 'Park' } ) } }>버튼</button> */}
+        <button onClick={ this.changeName.bind(this) }>버튼</button>
+        {/* <button onClick={ this.changeName }>버튼</button> */}
+      </div>
+    )
+ 
+  }
+}
+
 export default App;
+
 
 
