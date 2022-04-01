@@ -1,0 +1,32 @@
+.App {
+  text-align: center;
+}
+
+.Jumbotron {
+  /* background-color: #eee; */
+  padding: 1rem 0;
+  /* background-image: url(https://codingapple.com/wp-content/uploads/2020/05/background.jpg); */
+  background-image: url(./background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+  position: relative;
+}
+
+
+.Jumbotron::before {
+  content: "";
+        opacity: 0.1;
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        background-color: rgb(255, 255, 255);
+}
+
+.productbox .col-md-4 {
+  border: 1px rgb(216, 216, 216) solid;
+  }
+
+

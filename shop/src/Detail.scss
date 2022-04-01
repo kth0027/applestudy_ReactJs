@@ -1,0 +1,21 @@
+// 공통 reset.scss 임포트
+@import './reset.scss';
+
+// 변수설정
+$메인칼라 : #ff0000;
+
+// 변수사용
+.red {
+    color : $메인칼라,
+}
+
+// 네스팅 nesting
+div.container {
+    // h4{
+    //     color : blue;
+    // }
+    // p  {
+    //     color : green;
+    // }
+}
+
