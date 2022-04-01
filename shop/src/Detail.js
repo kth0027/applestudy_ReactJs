@@ -1,7 +1,8 @@
 /* eslint-disable */
 
 // 라우터시 필수
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 // history 오브젝트 생성
 import { useHistory, useParams } from 'react-router-dom';
 // css styleing
@@ -12,7 +13,6 @@ import './Detail.scss';
 //
 let 박스 = styled.div`
     padding : 20px;
-    border : 1px solid #000;
     border-radius : 0.5rem;
     margin-top : 20px;
     
@@ -27,6 +27,44 @@ let 제목 = styled.h4`
 
 // 디테일페이지 컴포넌트
 function Detail(props) {
+
+  
+  let [alert, alert변경] = useState(true);
+  let [inputData, inputData변경] = useState();
+
+
+  // hooks 사용
+  useEffect(() => {
+
+    //
+      axios.get()
+
+
+    // 2초후에 alert 창을 안보이게 해주세요
+    // let 타이머 = setTimeout(()=>{
+
+    // }, 2000)
+
+    // return function 어쩌구(){
+
+    // };
+
+    // 특정state가 변경 될때 실행하여 재렌더링을 막을 수 있다. 1번만 실행
+    let 타이머 = setTimeout(()=>{
+      alert변경(false)
+    }, 2000);
+    console.log('안녕');
+    
+    return ()=> {clearTimeout(타이머)} // 타이머 해제
+  
+  }, [ ] );
+  // 빈칸일 시 _ 가 변경이 될때만 usdEffect 실행
+  // 제한조건에 아무것도 없을 시 1번만 실행
+
+  useEffect(() => {
+
+  });
+
 
 
   let history = useHistory();
@@ -45,7 +83,19 @@ function Detail(props) {
         <제목 className="red">Detail</제목>
       </박스>
 
-    
+      {inputData}
+      <input onChange={(e)=>{ inputData변경(e.target.value) }} />
+
+      {/* 조건 */}
+      {
+        alert === true
+          ? (<div className="my-alert">
+            <p>재고가 얼마 남지 않았습니다.</p>
+          </div>)
+          : null
+      }
+
+
 
 
 
@@ -60,7 +110,10 @@ function Detail(props) {
           <h4 className="pt-5">{찾은상품.title}</h4>
           <p>{찾은상품.content}</p>
           <p>{찾은상품.price}원</p>
-          <button className="btn btn-danger">주문하기</button>
+          {/* 재고 */}
+          <Info 재고={props.재고} />
+          {/*  */}
+          <button className="btn btn-danger" onClick={ ()=>{props.재고변경([9,10,12])} }>주문하기</button>
           <button className="mx-2 btn btn-outline-danger" onClick={() => {
             history.goBack() // 뒤로가기
             //   history.push('/') // 특정경로
@@ -71,5 +124,27 @@ function Detail(props) {
     </div>
   )
 }
+
+
+
+
+// 구버전
+// class Detail2 extends React.Component {
+//   componentDidMount(){
+
+//   }
+
+//   componentWillUnmount(){
+
+//   }
+// }
+
+// 재고 컴포넌트
+function Info(props){
+  return (
+    <p>재고 : {props.재고[0]} </p>
+  )
+}
+
 
 export default Detail;

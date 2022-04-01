@@ -6,21 +6,24 @@ import logo from "./logo.svg";
 import "./App.css";
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 // import name from './data';
-import Data from './data';
-import Detail from './Detail';
+import Data from "./data";
+import Detail from "./Detail";
 
-import { Link, Route, Switch } from 'react-router-dom';
+import { Link, Route, Switch } from "react-router-dom";
 
-
+// axios
+import axios from "axios";
 
 function App() {
-
   // 신발데이터 : 데이터 바인딩하기
   let [shoes, shoes변경] = useState(Data);
 
+  // 재고 표시 및 변경
+  let [재고, 재고변경] = useState([10,11,12]);
+  
+
   return (
     <div className="App">
-
       {/* 네브바 */}
       <Navbar bg="light" expand="lg">
         <Container>
@@ -28,8 +31,21 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link> <Link to="/">Home</Link> </Nav.Link>
-              <Nav.Link><Link to="/detail">상세페이지</Link></Nav.Link>
+
+              {/* link 안의 link 오류남 */}
+              {/* <Nav.Link>
+                <Link to="/">Home</Link>
+              </Nav.Link>
+
+              <Nav.Link>
+                <Link to="/detail">상세페이지</Link>
+              </Nav.Link> */}
+
+              {/* 해결 */}
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/detail">상세페이지</ Nav.Link>
+
+
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
@@ -48,7 +64,6 @@ function App() {
         </Container>
       </Navbar>
 
-      
       <Switch>
         <Route exact path="/">
           {/* 점보트론 */}
@@ -59,8 +74,8 @@ function App() {
             <p>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque
               asperiores ea consectetur animi cum exercitationem, iusto ut nisi
-              ducimus mollitia labore sint. Odit tempora obcaecati iusto a totam id
-              illo.
+              ducimus mollitia labore sint. Odit tempora obcaecati iusto a totam
+              id illo.
             </p>
             <p>
               <button className="btn btn-outline-info" variant="primary">
@@ -72,11 +87,9 @@ function App() {
           {/* 상품  */}
           <div className="container productbox">
             <div className="row">
-              {
-                shoes.map((a, i) => {
-                  return <Card shoes={shoes[i]} i={i} />
-                })
-              }
+              {shoes.map((a, i) => {
+                return <Card shoes={shoes[i]} i={i} />;
+              })}
 
               {/* <Card shoes={shoes[0]} />
           <Card shoes={shoes[1]} />
@@ -102,29 +115,50 @@ function App() {
             <p>{shoes[2].content} & {shoes[1].price} </p>
           </div> */}
             </div>
-          </div>
-        </Route>
 
-        {/* 상품명마다 반복 */}
-        <Route path="/detail/:id">
-          <Detail shoes={shoes} />
-        </Route>
+            <button className="btn btn-primary my-3" onClick={() => {
 
-        {/* :파라미터 */}
-        <Route path="/:id">
-          <div>아무거나 적었을 시 보여주삼</div>
-        </Route>
+              axios.post('서버URL', {id:'codingapple', pw:123}).then();
 
-      </Switch>
+                //  로딩중
+
+              {/* 서버에 get 요청 */ }
+              axios.get('https://codingapple1.github.io/shop/data2.json')
+                .then((result) => {
+                  //  로딩중 지움
+                  // console.log('성공했어요')
+                  console.log('result.data');
+                  shoes변경([...shoes, ...result.data]) ;
+                })
+                .catch( ()=>{
+                  //  로딩중 지움
+              console.log('실패')
+            })
+
+            }}>더보기</button>
+
+
+
+        </div>
+      </Route>
+
+      {/* 상품명마다 반복 */}
+      <Route path="/detail/:id">
+        <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} />
+      </Route>
+
+      {/* :파라미터 */}
+      <Route path="/:id">
+        <div>아무거나 적었을 시 보여주삼</div>
+      </Route>
+    </Switch>
 
       {/* <Route path="/어쩌구" component={Card} ></Route> 
       
       <Route path="/어쩌구" component={Modal} ></Route>  */}
-
-    </div>
+    </div >
   );
 }
-
 
 // 상품 카드컴포넌트
 function Card(props) {
@@ -133,16 +167,19 @@ function Card(props) {
       {/* <img src="https://codingapple1.github.io/shop/shoes1.jpg" alt="" width="100%" />
       <img src="https://codingapple1.github.io/shop/shoes2.jpg" alt="" width="100%" />
       <img src="https://codingapple1.github.io/shop/shoes3.jpg" alt="" width="100%" /> */}
-      <img src={'https://codingapple1.github.io/shop/shoes' + (props.i + 1) + '.jpg'} width="100%" />
+      <img
+        src={
+          "https://codingapple1.github.io/shop/shoes" + (props.i + 1) + ".jpg"
+        }
+        width="100%"
+      />
 
       <h4>{props.shoes.title}</h4>
-      <p>{props.shoes.content} & {props.shoes.price} </p>
+      <p>
+        {props.shoes.content} & {props.shoes.price}{" "}
+      </p>
     </div>
-
-  )
+  );
 }
-
-
-
 
 export default App;
