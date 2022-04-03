@@ -10,6 +10,10 @@ import styled from "styled-components";
 // css 로드
 import './Detail.scss';
 // import {재고context} from './App.js';
+import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
+// css
+import { CSSTransition } from "react-transition-group";
+
 
 //
 let 박스 = styled.div`
@@ -29,17 +33,23 @@ let 제목 = styled.h4`
 
 // 디테일페이지 컴포넌트
 function Detail(props) {
-  
+
   let [alert, alert변경] = useState(true);
   let [inputData, inputData변경] = useState();
-  let 재고 = useContext(재고context);  //근데 여기서 에러남 ㅅㄱ
+  // let 재고 = useContext(재고context);  //근데 여기서 에러남 ㅅㄱ
+
+  // 탭버튼
+  let [누른탭, 누른탭변경] = useState();
+
+  // 애니메이션 스위치 변경
+  let [스위치, 스위치변경] = useState(false);
 
 
   // hooks 사용
   useEffect(() => {
 
     //
-      axios.get()
+    axios.get()
 
 
     // 2초후에 alert 창을 안보이게 해주세요
@@ -52,14 +62,14 @@ function Detail(props) {
     // };
 
     // 특정state가 변경 될때 실행하여 재렌더링을 막을 수 있다. 1번만 실행
-    let 타이머 = setTimeout(()=>{
+    let 타이머 = setTimeout(() => {
       alert변경(false)
     }, 2000);
     console.log('안녕');
-    
-    return ()=> {clearTimeout(타이머)} // 타이머 해제
-  
-  }, [ ] );
+
+    return () => { clearTimeout(타이머) } // 타이머 해제
+
+  }, []);
   // 빈칸일 시 _ 가 변경이 될때만 usdEffect 실행
   // 제한조건에 아무것도 없을 시 1번만 실행
 
@@ -86,7 +96,7 @@ function Detail(props) {
       </박스>
 
       {inputData}
-      <input onChange={(e)=>{ inputData변경(e.target.value) }} />
+      <input onChange={(e) => { inputData변경(e.target.value) }} />
 
       {/* 조건 */}
       {
@@ -115,7 +125,7 @@ function Detail(props) {
           {/* 재고 */}
           <Info 재고={props.재고} />
           {/*  */}
-          <button className="btn btn-danger" onClick={ ()=>{props.재고변경([9,10,12])} }>주문하기</button>
+          <button className="btn btn-danger" onClick={() => { props.재고변경([9, 10, 12]) }}>주문하기</button>
           <button className="mx-2 btn btn-outline-danger" onClick={() => {
             history.goBack() // 뒤로가기
             //   history.push('/') // 특정경로
@@ -123,9 +133,55 @@ function Detail(props) {
 
         </div>
       </div>
+
+      <div>
+        <Nav className="mt-5" variant="tabs" defaultActiveKey="link-0">
+          <Nav.Item>
+            <Nav.Link eventKey="link-0" onClick={() => { 스위치변경(false); 누른탭변경(0) }}>Active</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="link-1" onClick={() => { 스위치변경(false);  누른탭변경(1) }}>Option 2</Nav.Link>
+          </Nav.Item>
+        </Nav>
+        
+        <CSSTransition in={스위치} classNames="wow" timeout={500}>
+          <TabContent 누른탭={누른탭} 스위치변경={스위치변경}></TabContent>
+        </CSSTransition>
+      </div>
+
+
     </div>
   )
 }
+
+
+// 재고 컴포넌트
+function Info(props) {
+  return (
+    <p>재고 : {props.재고[0]} </p>
+  )
+}
+
+// tab 전환
+function TabContent(props) {
+
+  useEffect(()=>{
+    props.스위치변경(true);
+  });
+
+  if (props.누른탭 === 0) {
+    return (<div>0번째 내용입니다</div>)
+  } else if ((props.누른탭 === 1)) {
+    return (<div>1번째 내용입니다</div>)
+  } else if ((props.누른탭 === 2)) {
+    return (<div>2번째 내용입니다</div>)
+  }
+}
+
+
+
+export default Detail;
+
 
 
 
@@ -140,13 +196,3 @@ function Detail(props) {
 
 //   }
 // }
-
-// 재고 컴포넌트
-function Info(props){
-  return (
-    <p>재고 : {props.재고[0]} </p>
-  )
-}
-
-
-export default Detail;

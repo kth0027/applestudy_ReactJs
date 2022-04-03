@@ -10,6 +10,9 @@ import { Link, Route, Switch } from "react-router-dom";
 import { useState, useContext } from "react";
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 
+// Car page
+import Cart from './Cart';
+
 // context api
 // export let 재고context = React.createContext();
 
@@ -156,6 +159,13 @@ function App() {
           <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} />
         </Route>
         {/* </재고context.Provider> */}
+
+
+
+        <Route path="/cart">
+          <Cart></Cart>
+        </Route>
+
 
 
         {/* :파라미터 */}
