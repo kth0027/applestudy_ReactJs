@@ -9,6 +9,7 @@ import { useHistory, useParams } from 'react-router-dom';
 import styled from "styled-components";
 // css 로드
 import './Detail.scss';
+// import {재고context} from './App.js';
 
 //
 let 박스 = styled.div`
@@ -25,12 +26,13 @@ let 제목 = styled.h4`
 
 
 
+
 // 디테일페이지 컴포넌트
 function Detail(props) {
-
   
   let [alert, alert변경] = useState(true);
   let [inputData, inputData변경] = useState();
+  let 재고 = useContext(재고context);  //근데 여기서 에러남 ㅅㄱ
 
 
   // hooks 사용
