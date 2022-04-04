@@ -1,0 +1,55 @@
+// 공통 reset.scss 임포트
+@import './reset.scss';
+
+// 변수설정
+$메인칼라 : #ff0000;
+
+// 변수사용
+.red {
+    color : $메인칼라,
+}
+
+@mixin 함수() {
+    background : #eeeeee;
+    padding : 15px;
+    border-radius : 5px;
+    max-width : 500px;
+    width : 100%;
+    margin : auto;
+  }
+  
+// 네스팅 nesting
+div.container {
+    // h4{
+    //     color : blue;
+    // }
+    // p  {
+    //     color : green;
+    // }
+}
+
+.my-alert {
+    @include 함수()
+}
+
+.my-alert p {
+    margin-bottom: 0;
+    
+}
+
+
+.my-alert2 {
+    @extend .my-alert;
+    background-color: #ffe591;
+}
+
+.wow-enter {
+    opacity: 0;
+}
+
+.wow-enter-active {
+    opacity: 1;
+    transition: all 500ms;
+}
+
+

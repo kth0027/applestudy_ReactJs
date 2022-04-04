@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+}
+
+div {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.red {
+  color: #ff0000;
+}
+/*# sourceMappingURL=Detail.css.map */
+
