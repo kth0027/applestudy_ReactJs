@@ -13,7 +13,8 @@ import './Detail.scss';
 import { Navbar, Container, Nav, NavDropdown, Button } from "react-bootstrap";
 // css
 import { CSSTransition } from "react-transition-group";
-
+// redux
+import { connect } from "react-redux";
 
 //
 let 박스 = styled.div`
@@ -65,7 +66,7 @@ function Detail(props) {
     let 타이머 = setTimeout(() => {
       alert변경(false)
     }, 2000);
-    console.log('안녕');
+    // console.log('안녕');
 
     return () => { clearTimeout(타이머) } // 타이머 해제
 
@@ -125,7 +126,12 @@ function Detail(props) {
           {/* 재고 */}
           <Info 재고={props.재고} />
           {/*  */}
-          <button className="btn btn-danger" onClick={() => { props.재고변경([9, 10, 12]) }}>주문하기</button>
+          <button className="btn btn-danger" onClick={() => {
+            props.재고변경([9, 10, 12]);
+            props.dispatch({type : '항목추가', 데이터 : {id:찾은상품.id , name:찾은상품.title , quan : 1} });
+            history.push('/cart');
+          
+          }}>주문하기</button>
           <button className="mx-2 btn btn-outline-danger" onClick={() => {
             history.goBack() // 뒤로가기
             //   history.push('/') // 특정경로
@@ -137,10 +143,10 @@ function Detail(props) {
       <div>
         <Nav className="mt-5" variant="tabs" defaultActiveKey="link-0">
           <Nav.Item>
-            <Nav.Link eventKey="link-0" onClick={() => { 스위치변경(false); 누른탭변경(0) }}>Active</Nav.Link>
+            <Nav.Link eventKey="link-0" onClick={() => { 스위치변경(false); 누른탭변경(0) }}>상품설명</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link eventKey="link-1" onClick={() => { 스위치변경(false);  누른탭변경(1) }}>Option 2</Nav.Link>
+            <Nav.Link eventKey="link-1" onClick={() => { 스위치변경(false);  누른탭변경(1) }}>배송정보</Nav.Link>
           </Nav.Item>
         </Nav>
         
@@ -178,10 +184,19 @@ function TabContent(props) {
   }
 }
 
+function state를props화(state) {
+  return {
+      state: state.reducer,
+      alert열렸니:  state.reducer2
+  }
+}
 
 
-export default Detail;
 
+// export default Detail;
+
+// 리더스 사용시
+export default connect(state를props화)(Detail);
 
 
 
